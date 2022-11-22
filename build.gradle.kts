@@ -2,6 +2,7 @@ import org.gradle.api.plugins.internal.DefaultAdhocSoftwareComponent
 
 plugins {
     java
+    `idea`
     `maven-publish`
 //    `ivy-publish`
     kotlin("jvm") version "1.7.21"
@@ -54,7 +55,7 @@ publishing {
 }
 
 val pub = publishing.publications["maven"] as MavenPublication
-println("\nMaven published artifacts:")
+println("\nMaven artifacts:")
 pub.artifacts.onEach { println(it.file.relativeTo(project.projectDir)) }
 
 // Skip feature configurations
@@ -62,7 +63,7 @@ val javaComp = components["java"] as DefaultAdhocSoftwareComponent
 javaComp.withVariantsFromConfiguration(configurations["featureApiElements"]) { skip() }
 javaComp.withVariantsFromConfiguration(configurations["featureRuntimeElements"]) { skip() }
 
-println("\nGMM published artifacts:")
+println("\nGMM artifacts:")
 javaComp.usages.flatMap {
     it.artifacts
 }.map {
