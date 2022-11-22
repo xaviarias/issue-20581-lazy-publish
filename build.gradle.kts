@@ -2,9 +2,8 @@ import org.gradle.api.plugins.internal.DefaultAdhocSoftwareComponent
 
 plugins {
     java
-    `idea`
     `maven-publish`
-//    `ivy-publish`
+    `ivy-publish`
     kotlin("jvm") version "1.7.21"
 }
 
@@ -40,12 +39,13 @@ publishing {
             suppressAllPomMetadataWarnings()
             from(components["java"])
         }
-//        create<IvyPublication>("ivy") {
-//            organisation = "org.example"
-//            module = "issue-20581"
-//            revision = "1.1"
-//            from(components["kotlin"])
-//        }
+        create<IvyPublication>("ivy") {
+            suppressAllIvyMetadataWarnings()
+            organisation = "org.example"
+            module = "issue-20581"
+            revision = "1.1"
+            from(components["java"])
+        }
     }
     repositories {
         maven {
@@ -54,14 +54,24 @@ publishing {
     }
 }
 
-val pub = publishing.publications["maven"] as MavenPublication
 println("\nMaven artifacts:")
-pub.artifacts.onEach { println(it.file.relativeTo(project.projectDir)) }
+val mavenPub = publishing.publications["maven"] as MavenPublication
+mavenPub.artifacts.onEach {
+    println(it.file.relativeTo(project.projectDir))
+}
+
+println("\nIvy artifacts:")
+val ivyPub = publishing.publications["ivy"] as IvyPublication
+ivyPub.artifacts.onEach {
+    println(it.file.relativeTo(project.projectDir))
+}
 
 // Skip feature configurations
-val javaComp = components["java"] as DefaultAdhocSoftwareComponent
-javaComp.withVariantsFromConfiguration(configurations["featureApiElements"]) { skip() }
-javaComp.withVariantsFromConfiguration(configurations["featureRuntimeElements"]) { skip() }
+val javaComp = (components["java"] as DefaultAdhocSoftwareComponent).apply {
+    for (config in listOf("featureApiElements", "featureRuntimeElements")) {
+        withVariantsFromConfiguration(configurations[config]) { skip() }
+    }
+}
 
 println("\nGMM artifacts:")
 javaComp.usages.flatMap {
