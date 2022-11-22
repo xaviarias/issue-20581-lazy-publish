@@ -41,9 +41,6 @@ publishing {
         }
         create<IvyPublication>("ivy") {
             suppressAllIvyMetadataWarnings()
-            organisation = "org.example"
-            module = "issue-20581"
-            revision = "1.1"
             from(components["java"])
         }
     }
