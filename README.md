@@ -17,7 +17,7 @@ contain the feature variant:
 ```
 > Configure project :
 
-Maven published artifacts:
+Maven artifacts:
 build/libs/issue-20581-lazy-publish-1.0-SNAPSHOT.jar
 build/libs/issue-20581-lazy-publish-1.0-SNAPSHOT-test-feature.jar
 
@@ -25,7 +25,7 @@ Ivy artifacts:
 build/libs/issue-20581-lazy-publish-1.0-SNAPSHOT.jar
 build/libs/issue-20581-lazy-publish-1.0-SNAPSHOT-test-feature.jar
 
-GMM published artifacts:
+GMM artifacts:
 build/libs/issue-20581-lazy-publish-1.0-SNAPSHOT.jar
 
 BUILD SUCCESSFUL in 426ms
